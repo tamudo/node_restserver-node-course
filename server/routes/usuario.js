@@ -3,13 +3,19 @@ const Usuario = require('../models/usuario');
 const bcrypt = require('bcryptjs');
 const _ = require('underscore');
 
+const { verificaToken, verificaAdmin_Role } = require('../middlewares/autenticacion');
+
 const app = express();
 
 // conseguir
-app.get('/usuario', function(req, res) {
+app.get('/usuario', verificaToken, (req, res) => {
 
-
-
+    /*return res.json({
+        usuario: req.usuario,
+        nombre: req.usuario.nombre,
+        email: req.usuario.email
+    });
+*/
     let desde = Number(req.query.desde) || 0;
     let limite = Number(req.query.limite) || 5;
 
@@ -45,7 +51,7 @@ app.get('/usuario', function(req, res) {
 });
 
 // crear
-app.post('/usuario', function(req, res) {
+app.post('/usuario', [verificaToken, verificaAdmin_Role], function(req, res) {
     let body = req.body; // parseado por el body-parser
 
     let usuario = new Usuario({
@@ -73,7 +79,7 @@ app.post('/usuario', function(req, res) {
 });
 
 // actualizar user
-app.put('/usuario/:id', function(req, res) {
+app.put('/usuario/:id', [verificaToken, verificaAdmin_Role], function(req, res) {
     let id = req.params.id;
     // se usa underscore.js para filtrar solo los campos que queremos
     let body = _.pick(req.body, ['nombre', 'email', 'img', 'rol', 'estado']); // parseado por el body-parser
@@ -100,7 +106,7 @@ app.put('/usuario/:id', function(req, res) {
 });
 
 //borrar
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/usuario/:id', [verificaToken, verificaAdmin_Role], function(req, res) {
     let id = req.params.id;
 
     let cambiaEstado = {

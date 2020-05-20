@@ -14,8 +14,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-// obtenemos rutas de usuario y las usamos
-app.use(require('./routes/usuario'));
+// obtenemos rutas de usuario, login y las usamos
+app.use(require('./routes/index'));
+
 
 mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }, (err, resp) => {
     if (err) throw err;
