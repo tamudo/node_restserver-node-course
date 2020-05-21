@@ -3,6 +3,7 @@ require('./config/config');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const path = require('path'); //viene con node por defecto
 
 const app = express();
 
@@ -13,6 +14,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
 app.use(bodyParser.json());
+
+// habilitar la carpeta public para que se pueda acceder desde la web.
+app.use(express.static(path.resolve(__dirname, '../public')));
 
 // obtenemos rutas de usuario, login y las usamos
 app.use(require('./routes/index'));
