@@ -7,6 +7,9 @@ const path = require('path'); //viene con node por defecto
 
 const app = express();
 
+// Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
+// by default, you need to set it to false.
+mongoose.set('useFindAndModify', false);
 
 // app.use: Midleware...cada vez que hay una peticion se ejecuta
 // parse application/x-www-form-urlencoded
